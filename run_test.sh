@@ -19,7 +19,7 @@ git status
 if [ -n "$(git status --porcelain)" ]; then
 	echo "Des modifications ont été détectées."
 	git add .
-	git commit -m "Modification du 27/11/2024"
+	git commit -m "Modification ajouté le $(date '+%d/%m/%y %H:%M')"
 else
 	echo "Aucune Modification."
 fi
