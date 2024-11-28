@@ -1,0 +1,10 @@
+-----------------------------27/11/24 16:29----------------------------
+-----------------------------Début des Tests---------------------------
+Execution des tests, Vérification de la version de python
+Python 3.13.0
+Le 1er test est réussi.
+Execution d'un second test...
+Affichage via print !
+Le 2e test est réussi.
+------------------------------Fin des Tests-----------------------------
+SUCCESS
