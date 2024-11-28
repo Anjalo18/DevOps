@@ -51,11 +51,14 @@ build-and-deploy:
       run: |
         if grep -q "SUCCESS" log_message.txt; then
           echo "Tests passed."
+
         else
           echo "Test failed."
           cat log_message.txt
           exit 1
+
         fi
+
     - name: Merge dev into staging
       run: |
         git config user.name "github-actions[bot]"
