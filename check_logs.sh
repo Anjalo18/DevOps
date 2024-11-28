@@ -7,7 +7,7 @@ if [ ! -f "$LOG_FILE" ]; then
 	exit 1
 fi
 
-fi grep -q "SUCCESS" "$LOG_FILE"; then
+if grep -q "SUCCESS" "$LOG_FILE"; then
 	echo "Les tests on réussi !"
 else
 	echo "Les tests ont échoué. Voici les logs :"
