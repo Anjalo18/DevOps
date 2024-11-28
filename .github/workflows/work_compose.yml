@@ -47,10 +47,10 @@ build-and-deploy:
     - name: Docker Container Logs
       run: docker logs DevOps > log_message.txt
 
-   # - name: Check logs for Success
-   #   run: |
-   #      chmod +x ./check_logs.sh
-   #      ./check_logs.sh
+    - name: Check logs for Success
+      run: |
+         chmod +x ./check_logs.sh
+         ./check_logs.sh
     - name: Merge dev into staging
       run: |
         git config user.name "github-actions[bot]"
