@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile_Main
+    image: devops_app:latest
+    container_name: DevOpsApp
+    ports:
+      - "5000:5000"
+
