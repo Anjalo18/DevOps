@@ -49,6 +49,10 @@ jobs:
         run: |
           docker run -d --name DevOps -p 5000:5000 anjalo18/docker_image_devops:lastest
 
+      - name: Ensure log file
+        run: |
+          touch log_message.txt
+
       - name: Docker Container Logs
         run: docker logs DevOps > log_message.txt
 
