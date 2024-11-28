@@ -49,15 +49,8 @@ build-and-deploy:
 
     - name: Check logs for Success
       run: |
-        if grep -q "SUCCESS" log_message.txt; then
-          echo "Tests passed."
-
-        else
-          echo "Test failed."
-          cat log_message.txt
-          exit 1
-
-        fi
+        chmod +x ./check_logs.sh
+        ./check_logs.sh
 
     - name: Merge dev into staging
       run: |
