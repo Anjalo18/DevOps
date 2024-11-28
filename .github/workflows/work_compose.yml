@@ -47,16 +47,21 @@ build-and-deploy:
     - name: Docker Container Logs
       run: docker logs DevOps > log_message.txt
 
-    - name: Merge dev into staging
+    - name: Check logs
       run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        git fetch origin
-        git checkout staging
-        git merge dev --no-ff --commit --message "Merge de dev vers staging by GitHub Actions"
-        git push origin staging
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        chmod +x ./check_logs.sh
+        ./check_logs.sh
+
+#    - name: Merge
+#      run: |
+#        git config user.name "github-actions[bot]"
+#        git config user.email "github-actions[bot]@users.noreply.github.com"
+#        git fetch origin
+#        git checkout staging
+#        git merge dev --no-ff --commit --message "Merge de dev vers staging by GitHub Actions"
+#        git push origin staging
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Stop and Remove Docker Container
         run: |
