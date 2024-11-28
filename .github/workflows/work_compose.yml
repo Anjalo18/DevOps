@@ -43,7 +43,6 @@ build-and-deploy:
     - name: Run Docker Container
       run: |
         docker run -d --name DevOps -p 5000:5000 anjalo18/docker_image_devops:lastest
-        sleep(10)
 
     - name: Docker Container Logs
       run: docker logs DevOps > log_message.txt
@@ -52,7 +51,6 @@ build-and-deploy:
       run: |
         chmod +x ./check_logs.sh
         ./check_logs.sh
-
     - name: Merge dev into staging
       run: |
         git config user.name "github-actions[bot]"
