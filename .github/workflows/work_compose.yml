@@ -56,7 +56,6 @@ build-and-deploy:
           cat log_message.txt
           exit 1
         fi
-
     - name: Merge dev into staging
       run: |
         git config user.name "github-actions[bot]"
