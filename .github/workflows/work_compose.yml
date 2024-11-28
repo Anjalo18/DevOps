@@ -51,6 +51,7 @@ build-and-deploy:
       run: |
         chmod +x ./check_logs.sh
         ./check_logs.sh
+
     - name: Merge dev into staging
       run: |
         git config user.name "github-actions[bot]"
