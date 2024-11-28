@@ -50,7 +50,7 @@ build-and-deploy:
     - name: Check logs for Success
       run: |
         if grep -q "SUCCESS" log_message.txt; then
-          echo "Tests passed !"
+          echo "Tests passed."
         else
           echo "Test failed."
           cat log_message.txt
