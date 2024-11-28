@@ -49,8 +49,13 @@ jobs:
 
       - name: Check logs
         run: |
-          chmod +x ./check_logs.sh
-          ./check_logs.sh
+          if grep -q "SUCCESS" log_message.txt; then
+            echo "Test passed."
+          else
+            echo "Test failed."
+            cat log_message.txt
+            exit 1
+          fi
 
       - name: Merge
         run: |
