@@ -76,7 +76,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git fetch origin
           git checkout staging
-          git merge dev --no-ff --commit --message "Merge de dev vers staging by GitHub Actions"
+          git merge -X theirs dev --commit --message "Merge de dev vers staging by GitHub Actions"
           git push origin staging
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
