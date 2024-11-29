@@ -1,0 +1,90 @@
+name: CI /CD DevOps
+on:
+  push:
+    branches:
+      - dev
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    name: Run Python Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+
+      - name: Install Flask
+        run: |
+          python -m pip install --upgrade pip
+          pip install flask
+
+      - name: Run Python version check
+        run: python3 --version
+
+      - name: Run a simple test
+        run: python3 -c "print('Affichage via print !')"
+
+      - name:
+        run: echo "SUCCESS"
+
+  build-and-deploy:
+    name: Build, Run and Deploy Docker Container
+    runs-on: ubuntu-latest
+    needs: test
+    if: ${{ success() }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Pull Docker Image
+        run: docker pull anjalo18/docker_image_devops:lastest
+
+      - name: Run Docker Container
+        run: |
+          docker run --name DevOps -p 5000:5000 anjalo18/docker_image_devops:lastest
+
+      - name: Ensure log file
+        run: |
+          touch log_message.txt
+
+      - name: Docker Container Logs
+        run: docker logs DevOps > log_message.txt
+
+      - name: Check logs
+        run: |
+          if grep -q "SUCCESS" log_message.txt; then
+            echo "Test passed."
+          else
+            echo "Test failed."
+            cat log_message.txt
+            exit 1
+          fi
+
+      - name: Remove log_message.txt
+        run: |
+          rm -f log_message.txt
+
+      - name: Merge
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin
+          git checkout staging
+          git merge -X theirs dev --allow-unrelated-histories --commit --message "Merge de dev vers staging by GitHub Actions"
+          git push origin staging
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Stop and Remove Docker Container
+        run: |
+          docker stop DevOps
+          docker rm DevOps

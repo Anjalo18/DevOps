@@ -1,5 +1,5 @@
 FROM python
-WORKDIR /home/devops/devops_docker/
+WORKDIR /home/devops/devops_docker
 
 RUN apt-get update && apt-get install -y curl
 RUN apt install -y python3-pip python3-dev build-essential libssl-dev libffi-dev python3-setuptools
