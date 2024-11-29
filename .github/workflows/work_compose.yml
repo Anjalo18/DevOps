@@ -47,8 +47,7 @@ jobs:
 
       - name: Run Docker Container
         run: |
-          docker run -d --name DevOps -p 5000:5000 anjalo18/docker_image_devops:lastest
-          sleep 20
+          docker run --name DevOps -p 5000:5000 anjalo18/docker_image_devops:lastest
 
       - name: Ensure log file
         run: |
@@ -66,6 +65,10 @@ jobs:
             cat log_message.txt
             exit 1
           fi
+
+      - name: Remove log_message.txt
+        run: |
+          rm -f log_message.txt
 
       - name: Merge
         run: |
