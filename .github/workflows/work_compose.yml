@@ -1,64 +1,82 @@
 name: CI /CD DevOps
+
+# Trigger the workflow when changes are pushed to the "dev" branch
 on:
   push:
     branches:
       - dev
 
+# Set permissions for this workflow
 permissions:
   contents: write
 
 jobs:
   test:
+    # Run Python test
     name: Run Python Test
     runs-on: ubuntu-latest
     steps:
+      # Step to check out the code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step to set up Python environment
       - name: Set up Python
         uses: actions/setup-python@v4
 
+      # Step to install Flask
       - name: Install Flask
         run: |
           python -m pip install --upgrade pip
           pip install flask
 
+      # Step to check Python version 
       - name: Run Python version check
         run: python3 --version
 
+      # Step to run a simple Python test
       - name: Run a simple test
         run: python3 -c "print('Affichage via print !')"
 
+      # Step to print a success message
       - name:
         run: echo "SUCCESS"
 
   build-and-deploy:
+    # Build and deploy Docker containe
     name: Build, Run and Deploy Docker Container
     runs-on: ubuntu-latest
     needs: test
     if: ${{ success() }}
 
     steps:
+      # Step to check out the code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step to set up Docker
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
+      # Step to pull the Dock image
       - name: Pull Docker Image
         run: docker pull anjalo18/docker_image_devops:lastest
 
+      # Step to run the Docker container
       - name: Run Docker Container
         run: |
           docker run --name DevOps -p 5000:5000 anjalo18/docker_image_devops:lastest
 
+      # Step to ensure Log file exists
       - name: Ensure log file
         run: |
           touch log_message.txt
 
+      # Step to get Docker container Logs
       - name: Docker Container Logs
         run: docker logs DevOps > log_message.txt
 
+      # Step to check logs for "SUCCESS" and print test result
       - name: Check logs
         run: |
           if grep -q "SUCCESS" log_message.txt; then
@@ -69,10 +87,12 @@ jobs:
             exit 1
           fi
 
+      # Step to remove the Log file after checks
       - name: Remove log_message.txt
         run: |
           rm -f log_message.txt
 
+      # Step to merge changes from dev to staging
       - name: Merge
         run: |
           git config user.name "github-actions[bot]"
@@ -84,6 +104,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # Step to stop and remove the Docker Container
       - name: Stop and Remove Docker Container
         run: |
           docker stop DevOps
